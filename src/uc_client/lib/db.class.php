@@ -87,6 +87,7 @@ class ucclient_db {
 
 	function query($sql, $type = '', $cachetime = FALSE) {
 
+		dd($sql);
 		$func = $type == 'UNBUFFERED' && function_exists('mysqli_unbuffered_query') ? 'mysqli_unbuffered_query' : 'mysqli_query';
 		if(!($query = $func($sql, $this->link)) && $type != 'SILENT') {
 			$this->halt('MySQL Query Error', $sql);
