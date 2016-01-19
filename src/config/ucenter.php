@@ -15,4 +15,4 @@ return [
 	'appid'     => env('ucenter_appid',5), //当前应用的 ID
 	'ppp'       => env('ucenter_ppp',20), //当前应用的每页数量
 ];
-?>
+

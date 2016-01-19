@@ -37,11 +37,16 @@ class base {
 	}
 
 	function base() {
-		$this->init_var();
-		$this->init_db();
-		$this->init_cache();
-		$this->init_note();
-		$this->init_mail();
+		try{
+			$this->init_var();
+			$this->init_db();
+			$this->init_cache();
+			$this->init_note();
+			$this->init_mail();
+		}catch (\Exception $e){
+			throw new Exception('base.php init error.');
+		}
+
 	}
 
 	function init_var() {
@@ -198,7 +203,7 @@ class base {
 	}
 
 	function note_exists() {
-		$noteexists = $this->db->fetch_first("SELECT value FROM ".UC_DBTABLEPRE."$vars WHERE name='noteexists".UC_APPID."'");
+		$noteexists = $this->db->fetch_first("SELECT value FROM ".UC_DBTABLEPRE."vars WHERE name='noteexists".UC_APPID."'");
 		if(empty($noteexists)) {
 			return FALSE;
 		} else {

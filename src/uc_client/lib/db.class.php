@@ -34,15 +34,15 @@ class ucclient_db {
 		$this->tablepre = $tablepre;
 		$this->time = $time;
 		if($pconnect) {
-			if(!$this->link = mysqli_pconnect($dbhost, $dbuser, $dbpw)) {
+			if(!$this->link = mysqli_connect($dbhost, $dbuser, $dbpw,$dbname)) {
 				$this->halt('Can not connect to MySQL server');
 			}
 		} else {
-			if(!$this->link = mysqli_connect($dbhost, $dbuser, $dbpw)) {
+			if(!$this->link = mysqli_connect($dbhost, $dbuser, $dbpw,$dbname)) {
 				$this->halt('Can not connect to MySQL server');
 			}
 		}
-
+		dd($this->link);
 		if($this->version() > '4.1') {
 			if($dbcharset) {
 				mysqli_query("SET character_set_connection=".$dbcharset.", character_set_results=".$dbcharset.", character_set_client=binary", $this->link);
@@ -86,10 +86,8 @@ class ucclient_db {
 	}
 
 	function query($sql, $type = '', $cachetime = FALSE) {
-
-		dd($sql);
-		$func = $type == 'UNBUFFERED' && function_exists('mysqli_unbuffered_query') ? 'mysqli_unbuffered_query' : 'mysqli_query';
-		if(!($query = $func($sql, $this->link)) && $type != 'SILENT') {
+		$query = mysqli_query($sql, $this->link);
+		if(!($query = mysqli_query($sql, $this->link)) && $type != 'SILENT') {
 			$this->halt('MySQL Query Error', $sql);
 		}
 		$this->querynum++;
